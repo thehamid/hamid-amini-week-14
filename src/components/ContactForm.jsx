@@ -19,7 +19,6 @@ const ContactForm = ({ onSave, onClose, contact }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    validate()
   };
 
   const validate = () => {

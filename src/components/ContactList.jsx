@@ -1,18 +1,19 @@
 import ContactItem from './ContactItem';
+import StarCheckbox from './elements/StarCheckbox';
 
-const ContactList = ({ contacts, onEdit, onDelete, selectedContacts, onToggleSelect, onSelectAll, isAllSelected }) => {
+const ContactList = ({ contacts, onEdit, onDelete, selectedContacts, onToggleSelect, onSelectAll, isAllSelected,isFavOnly,onFavOnly,onFavTogglSelect,favoritesExist }) => {
   if (contacts.length === 0) {
     return <p className="no-contacts">هیچ مخاطبی برای نمایش یافت نشد.</p>;
   }
-
+  
+  
   return (
     <>
       <div className="contact-list-header">
+        <StarCheckbox  isFavOnly={isFavOnly} onFavOnly={onFavOnly} favoritesExist={favoritesExist}   />
         <input type="checkbox" checked={isAllSelected} onChange={onSelectAll} />
         <span>نام </span>
-        <span>شغل</span>
-        <span>ایمیل</span>
-        <span>تلفن</span>
+        <span>جزئیات </span>
         <span>عملیات</span>
       </div>
       <ul className="contact-list">
@@ -24,6 +25,7 @@ const ContactList = ({ contacts, onEdit, onDelete, selectedContacts, onToggleSel
             onDelete={onDelete}
             isSelected={selectedContacts.has(contact.id)}
             onToggleSelect={onToggleSelect}
+            onFavToggle={onFavTogglSelect}
           />
         ))}
       </ul>

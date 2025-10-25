@@ -18,17 +18,41 @@ const initialContacts = [
 ];
 
 function App() {
-  const [contacts, setContacts] = useState(initialContacts);
+  const storedConatcts = localStorage.getItem("contacts-plus");
+  const [contacts, setContacts] = useState(storedConatcts ? JSON.parse(storedConatcts) :initialContacts);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedContacts, setSelectedContacts] = useState(new Set());
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingContact, setEditingContact] = useState(null);
   const [modalState, setModalState] = useState({ isOpen: false, type: null, data: null });
   const [filteredContacts, setFilteredContacts] = useState(contacts);
+  const [showFavsOnly, setShowFavsOnly] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+   const [refresh, setRefresh] = useState(0);
+
+   // ذخیره مخاطبین در لوکال استوریج
+   useEffect(() => {
+    localStorage.setItem('contacts-plus',JSON.stringify(contacts) );
+  }, [contacts]);
+
+//   دریافت علاقه مندی ها از لوکال
+   useEffect(() => {
+    const favs = JSON.parse(localStorage.getItem("favorites")) || [];
+    setFavorites(favs);
+  }, [refresh]);
 
 
-useEffect(() => {
+   useEffect(() => {
+  const favoritesContacts = showFavsOnly
+    ? contacts.filter(contact => favorites.includes(contact.id))
+    : contacts;
+  
+  setFilteredContacts(favoritesContacts);
 
+}, [showFavsOnly]);
+
+
+  useEffect(() => {
   const newFilteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     contact.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -109,6 +133,14 @@ useEffect(() => {
     }
   };
 
+
+
+ // توابع علاقه مندی مخاطب
+  const handleFavToggle = () => {
+    setRefresh(prev => prev + 1); 
+  };
+
+
   return (
     <div className="app-container">
          <Toaster position="top-center" reverseOrder={false} />
@@ -134,6 +166,10 @@ useEffect(() => {
           onToggleSelect={handleToggleSelect}
           onSelectAll={handleSelectAll}
           isAllSelected={filteredContacts.length > 0 && selectedContacts.size === filteredContacts.length}
+          isFavOnly={showFavsOnly}
+          onFavOnly={(e) => setShowFavsOnly(e.target.checked)}
+          onFavTogglSelect={handleFavToggle}
+          favoritesExist={favorites.length > 0}
         />
       </main>
 

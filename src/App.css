@@ -3,6 +3,7 @@
 :root {
   --primary-color: #7C3AED;
   --secondary-color: #4ee3fd;
+  --warning-color: #ffbb00;
   --danger-color: #e74c3c;
   --success-color: #2ecc71;
   --background-color: #f4f7f6;
@@ -145,8 +146,9 @@ body {
 
 /* --- Contact List --- */
 .contact-list-header {
-  display: grid;
-  grid-template-columns: 50px 1fr 1fr 1fr 1fr 120px;
+display: grid;
+grid-template-columns: repeat(2, 50px) 1fr 50px 100px;
+grid-column-gap: 10px;
   align-items: center;
   padding: 0.75rem 1rem;
   background-color: #f8f9fa;
@@ -160,9 +162,9 @@ body {
 }
 
 .contact-item {
-  display: grid;
-  grid-template-columns: 50px 1fr 1fr 1fr 1fr 120px;
-  align-items: center;
+display: grid;
+grid-template-rows: repeat(2, 1fr);
+grid-row-gap: 5px;
   padding: 1rem;
   border-bottom: 1px solid var(--border-color);
   transition: background-color 0.2s, transform 0.2s;
@@ -177,8 +179,11 @@ body {
   border-bottom: none;
 }
 
-.contact-info span {
-  display: block;
+.contact-info {
+ display: grid;
+grid-template-columns: repeat(2, 50px) 1fr 50px 100px;
+grid-column-gap: 10px;
+  align-items: center;
 }
 
 .contact-info .name {
@@ -186,14 +191,39 @@ body {
   font-size: 1.1rem;
 }
 
-.contact-info .work,.contact-info .email, .contact-info .phone {
-  font-size: 0.9rem;
+.contact-details{
+    max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+text-align: right;
+margin-right: 100px;
+font-size: 0.9rem;
   color: var(--text-light);
+}
+
+.contact-details.open {
+  max-height: 200px; 
+}
+
+.btn-more{
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+}
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+  color: var(--success-color);
 }
 
 .contact-actions  {
     display: flex;
-    justify-content: end;
     gap: 0.2rem;
 }
 
@@ -207,6 +237,18 @@ body {
   padding: 3rem;
   color: var(--text-light);
   font-size: 1.2rem;
+}
+
+.fav-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.fav-button.active {
+  color:var(--warning-color);
 }
 
 
@@ -337,20 +379,11 @@ body {
     padding: 1rem 0.3rem;
   }
   .contact-list-header {
-  grid-template-columns: 25px 1fr 1fr  1fr 1fr;
   padding: 0.4rem 0.1rem;
   }
   .contact-item {
-  grid-template-columns: 25px 1fr 1fr  1fr 1fr;
-  padding: 0.4rem 0.1rem;
-    
+  padding: 0.4rem 0.1rem;    
 }
- .contact-list-header span:nth-child(3) {
-  display: none;
- }
 
- .contact-item div:nth-child(3) {
-    display: none;
-  }
 
 }
